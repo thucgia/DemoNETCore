@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Demo.Commons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Demo.IReposotories
+namespace Demo.IServices
 {
-    public interface IUserRepository<T>
+    public interface IBaseService<T>
     {
         public Task<T> Create(T obj);
         public void Update(T obj);
-        public void Delete(T obj);
-        //public T GetId(int id);
+        public void Delete(int id);
         public IEnumerable<T> GetAll();
+        public T GetId(int id);
     }
 }

@@ -34,8 +34,20 @@ namespace Demo
         {
             services.AddControllers();
             services.AddDbContext<AppDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("appConn")));
-            services.AddScoped<IUserRepository<User>, UserRepository>();
-            services.AddScoped<IUserService<User>, UserService>();
+            services.AddScoped<IBaseRepository<User>, UserRepository>();
+            services.AddScoped<IBaseService<User>, UserService>();
+
+            services.AddScoped<IBaseRepository<Category>, CategoryRepository>();
+            services.AddScoped<IBaseService<Category>, CategoryService>();
+
+            services.AddScoped<IBaseRepository<Product>, ProductRepository>();
+            services.AddScoped<IBaseService<Product>, ProductService>();
+            services.AddScoped<ICategoryService, ProductService>();
+            services.AddScoped<ISupplierService, ProductService>();
+
+            services.AddScoped<IBaseRepository<Supplier>, SupplierRepository>();
+            services.AddScoped<IBaseService<Supplier>, SupplierService>();
+            //services.AddScoped<>
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

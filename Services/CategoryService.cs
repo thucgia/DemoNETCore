@@ -1,5 +1,4 @@
-﻿using Demo.Commons;
-using Demo.IReposotories;
+﻿using Demo.IReposotories;
 using Demo.IServices;
 using Demo.Models;
 using System;
@@ -9,19 +8,17 @@ using System.Threading.Tasks;
 
 namespace Demo.Services
 {
-    public class UserService : IBaseService<User>
+    public class CategoryService : IBaseService<Category>
     {
-        private readonly IBaseRepository<User> _repository;
-        public UserService(IBaseRepository<User> repository)
-        {
+        private readonly IBaseRepository<Category> _repository;
+        public CategoryService(IBaseRepository<Category> repository) {
             _repository = repository;
         }
-        public Task<User> Create(User obj)
+        public Task<Category> Create(Category obj)
         {
             try
             {
-                if (obj == null)
-                    return null;
+                if (obj == null) return null;
                 return _repository.Create(obj);
             }
             catch (Exception)
@@ -29,33 +26,22 @@ namespace Demo.Services
                 throw;
             }
         }
-        public void Update(User obj)
-        {
-            try
-            {
-                if (obj == null)
-                    throw new ArgumentNullException("No user");
-                _repository.Update(obj);
-            }
-            catch(Exception)
-            {
-                throw;
-            }
-        }
+
         public void Delete(int id)
         {
             try
             {
-                var user = _repository.GetAll().FirstOrDefault(x => x.Id == id);
-                if (user == null) throw new ArgumentException("User not Found");
-                _repository.Delete(user);
+                var category = _repository.GetAll().FirstOrDefault(x => x.Id == id);
+                if (category == null) throw new KeyNotFoundException("Category not existed");
+                _repository.Delete(category);
             }
             catch(Exception)
             {
                 throw;
             }
         }
-        public IEnumerable<User> GetAll()
+
+        public IEnumerable<Category> GetAll()
         {
             try
             {
@@ -66,13 +52,26 @@ namespace Demo.Services
                 throw;
             }
         }
-        public User GetId(int id)
+
+        public Category GetId(int id)
         {
             try
             {
                 return _repository.GetId(id);
             }
-            catch (Exception)
+            catch(Exception)
+            {
+                throw;
+            }
+        }
+
+        public void Update(Category obj)
+        {
+            try
+            {
+                _repository.Update(obj);
+            }
+            catch(Exception)
             {
                 throw;
             }

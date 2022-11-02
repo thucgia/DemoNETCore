@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Repositories
 {
-    public class UserRepository : IUserRepository<User>
+    public class UserRepository : IBaseRepository<User>
     {
         private readonly AppDbContext _context;
         public UserRepository(AppDbContext context)
@@ -68,6 +68,18 @@ namespace Demo.Repositories
                 return users;
             }
             catch (Exception)
+            {
+                throw;
+            }
+        }
+        public User GetId(int id)
+        {
+            try
+            {
+                var user = _context.tblUsers.FirstOrDefault(x => x.Id == id);
+                return user;
+            }
+            catch(Exception)
             {
                 throw;
             }
