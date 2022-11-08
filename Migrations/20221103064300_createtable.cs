@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Demo.Migrations
 {
-    public partial class CreateTable : Migration
+    public partial class createtable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +41,8 @@ namespace Demo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: false),
+                    PasswordHash = table.Column<byte[]>(nullable: false),
+                    PasswordSalt = table.Column<byte[]>(nullable: false),
                     PhoneNumber = table.Column<string>(nullable: false)
                 },
                 constraints: table =>

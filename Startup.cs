@@ -1,9 +1,11 @@
 using Demo.Data;
 using Demo.IReposotories;
 using Demo.IServices;
+using Demo.Middlewares;
 using Demo.Models;
 using Demo.Repositories;
 using Demo.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,9 +15,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Demo
@@ -33,9 +37,36 @@ namespace Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddAuthentication(
+                x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+            )
+            .AddJwtBearer(
+                o =>
+                {
+                    var Key = Encoding.UTF8.GetBytes(Configuration["JWT:Key"]);
+                    o.SaveToken = true;
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        //ValidateLifetime = false,
+                        ValidateIssuerSigningKey = true,
+                        //ValidIssuer = Configuration["JWT:Issuer"],
+                        //ValidAudience = Configuration["JWT:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Key)
+                    };
+                }
+
+            )
+            ;
             services.AddDbContext<AppDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("appConn")));
-            services.AddScoped<IBaseRepository<User>, UserRepository>();
-            services.AddScoped<IBaseService<User>, UserService>();
+            services.AddTransient<IBaseRepository<User>, UserRepository>();
+            services.AddTransient<IBaseService<User>, UserService>();
 
             services.AddScoped<IBaseRepository<Category>, CategoryRepository>();
             services.AddScoped<IBaseService<Category>, CategoryService>();
@@ -47,7 +78,10 @@ namespace Demo
 
             services.AddScoped<IBaseRepository<Supplier>, SupplierRepository>();
             services.AddScoped<IBaseService<Supplier>, SupplierService>();
-            //services.AddScoped<>
+
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IJWTManagerRepository, JWTManagerRepository>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +96,8 @@ namespace Demo
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseMiddleware<JWTMiddleware>();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

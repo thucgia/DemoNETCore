@@ -5,8 +5,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20221031063658_CreateTable.cs" />
+    <Compile Remove="Migrations\20221031063658_CreateTable.Designer.cs" />
+    <Compile Remove="Migrations\20221102023917_CreateTable.cs" />
+    <Compile Remove="Migrations\20221102023917_CreateTable.Designer.cs" />
+    <Compile Remove="Migrations\20221102024136_CreateTable.cs" />
+    <Compile Remove="Migrations\20221102024136_CreateTable.Designer.cs" />
+    <Compile Remove="Migrations\20221102024912_create-table.cs" />
+    <Compile Remove="Migrations\20221102024912_create-table.Designer.cs" />
+    <Compile Remove="Migrations\20221102025114_CreateTable.cs" />
+    <Compile Remove="Migrations\20221102025114_CreateTable.Designer.cs" />
+    <Compile Remove="Migrations\20221102064650_CreateTable.cs" />
+    <Compile Remove="Migrations\20221102064650_CreateTable.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.30" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.30" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.30" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.30">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
   </ItemGroup>
 
 

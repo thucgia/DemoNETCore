@@ -23,27 +23,6 @@ namespace Demo.Controllers
         }
 
         [HttpPost]
-        [Route("register")]
-        public async Task<ActionResult> Register([FromBody] UserRegisterVM user)
-        {
-            if (user == null) return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status="Error", Message="Fail" });
-
-            User obj = new User
-            {
-                UserName = user.UserName,
-                Email = user.Email,
-                PasswordHash = user.Password,
-                PhoneNumber = user.PhoneNumber
-            };
-
-            var result = await _service.Create(obj);
-
-            if (result != null) return Ok(new Response{ Status = "Success", Message = "Create Success" });
-
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Fail" });
-        }
-
-        [HttpPost]
         [Route("update")]
         public ActionResult Update([FromBody] UserUpdateVM obj)
         {
@@ -63,12 +42,14 @@ namespace Demo.Controllers
         }
 
         [HttpGet]
-        [Route("users")]
         public ActionResult<IEnumerable<User>> GetAll()
         {
+            string Status = "Error";
+            string Message = "No item Found";
+
             var users = _service.GetAll();
 
-            if (users.Count() == 0) return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Success", Message = "No item Found" });
+            if (users.Count() == 0) return StatusCode(StatusCodes.Status404NotFound, new Response { Status = Status, Message = Message });
 
             return users.ToList();
         }

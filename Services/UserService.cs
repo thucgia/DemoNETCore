@@ -16,19 +16,7 @@ namespace Demo.Services
         {
             _repository = repository;
         }
-        public Task<User> Create(User obj)
-        {
-            try
-            {
-                if (obj == null)
-                    return null;
-                return _repository.Create(obj);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+
         public void Update(User obj)
         {
             try
@@ -76,6 +64,11 @@ namespace Demo.Services
             {
                 throw;
             }
+        }
+
+        public Task<User> Create(User obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }
